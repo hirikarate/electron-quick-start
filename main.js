@@ -7,20 +7,29 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
+class AdvancedWindow extends BrowserWindow {
+	constructor(options) {
+		super(options);
+	}
+}
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+
+  //   mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new AdvancedWindow({width: 800, height: 600});
+  showOpenDialog();
 
   // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+//   mainWindow.loadURL(url.format({
+//     pathname: path.join(__dirname, 'index.html'),
+//     protocol: 'file:',
+//     slashes: true
+//   }))
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -32,6 +41,16 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+}
+
+function showOpenDialog() {
+	return electron.dialog.showOpenDialog(
+		mainWindow,
+		{
+			title: 'Custom title',
+			buttonLabel: 'Custom action',
+			properties: ['openDirectory']
+		});
 }
 
 // This method will be called when Electron has finished
